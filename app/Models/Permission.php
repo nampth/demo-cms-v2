@@ -10,4 +10,9 @@ class Permission extends Model
     use HasFactory;
 
     protected $fillable = ['name', 'description'];
+
+    protected function serializeDate(\DateTimeInterface $date)
+    {
+        return $date->format('H:i:s d/m/Y');
+    }
 }

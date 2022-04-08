@@ -1,7 +1,9 @@
 <?php
 
+use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
-
+use Inertia\Inertia;
+use App\Utils\UIUtils;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -14,5 +16,16 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return Inertia::render('Welcome', [
+        'canLogin' => Route::has('login'),
+        'canRegister' => Route::has('register'),
+        'laravelVersion' => Application::VERSION,
+        'phpVersion' => PHP_VERSION,
+    ]);
 });
+
+Route::group(['namespace' => 'Backend', 'prefix' => 'backend', 'as' => 'backend.', 'middleare' => ['auth', 'verified']], function () {
+    UIUtils::include_route_files(__DIR__ . '/backend/');
+});
+
+require __DIR__ . '/auth.php';

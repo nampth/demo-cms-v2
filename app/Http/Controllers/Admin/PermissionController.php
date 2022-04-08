@@ -7,6 +7,7 @@ use App\Http\Requests\Permission\CreatePermissionRequest;
 use App\Http\Requests\Permission\UpdatePermissionRequest;
 use App\Http\Services\PermissionServices;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class PermissionController extends Controller
 {
@@ -15,6 +16,10 @@ class PermissionController extends Controller
     public function __construct(PermissionServices $permissionServices)
     {
         $this->permissionServices = $permissionServices;
+    }
+
+    public function index(){
+        return Inertia::render('Backend/Admin/Permission'); 
     }
 
     public function listing(Request $request)

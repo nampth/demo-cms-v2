@@ -20,22 +20,16 @@ class PermissionServices{
 
     public function listing(Request $request)
     {
-        $draw = $request->input('draw');
+    
         $start = $request->input('start');
         $length = $request->input('length');
-        $columns = $request->input('columns');
-
-        $search = $request->input('search');
-        $keyword = $search['value'];
-
-        $order = $request->input('order');
-        $orderBy = $columns[$order[0]['column']]['data'];
-        $orderType = $order[0]['dir'];
+        $keyword = $request->input('search');
+        $orderBy = $request->input('order_by');
+        $orderType = $request->input('order_type');
 
         $filteredRecords = $this->permissionRepo->listingSimple([], $keyword, ['name', 'description'], $start, $length, $orderBy, $orderType, true);
         $totalRecords = $this->permissionRepo->listingSimple([], '', ['name', 'description'], $start, $length, $orderBy, $orderType, true);
         return response()->json([
-            'draw' => $draw,
             'data' => $this->permissionRepo->listingSimple([], $keyword, ['name', 'description'], $start, $length, $orderBy, $orderType, false),
             'recordsFiltered' => $filteredRecords ? $filteredRecords : 0,
             'recordsTotal' => $totalRecords ? $totalRecords : 0,

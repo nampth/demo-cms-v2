@@ -14,6 +14,10 @@ class Role extends Model
     use RoleUserTrait;
     use RolePermissionTrait;
 
-    protected $fillable = ['name', 'default_redirect', 'description', 'parent_role'];
+    protected $fillable = ['name', 'default_redirect', 'description'];
 
+    protected function serializeDate(\DateTimeInterface $date)
+    {
+        return $date->format('H:i:s d/m/Y');
+    }
 }

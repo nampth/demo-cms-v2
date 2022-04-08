@@ -18,6 +18,10 @@ class PermissionTableSeeder extends Seeder
         DB::table('permissions')
         ->insert([
             [
+                'name' => ADMIN_DASHBOARD,
+                'description' => 'Admin dashboard'
+            ],
+            [
                 'name' => ADMIN_USER_MANAGEMENT,
                 'description' => 'Admin manages users'
             ],
