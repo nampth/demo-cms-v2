@@ -78,7 +78,9 @@ export default {
             <div class="my-2 flex sm:flex-row flex-col">
               <div class="flex flex-row mb-1 sm:mb-0">
                 <div class="relative">
-                  <select v-model="length" @change="initTablePermissions"
+                  <select
+                    v-model="length"
+                    @change="initTablePermissions"
                     class="
                       appearance-none
                       h-full
@@ -104,7 +106,9 @@ export default {
                 </div>
               </div>
               <div class="block relative">
-                <input v-model="search" @keyup="initTablePermissions"
+                <input
+                  v-model="search"
+                  @keyup="initTablePermissions"
                   placeholder="Search"
                   class="
                     appearance-none
@@ -228,7 +232,25 @@ export default {
                           bg-white
                           text-sm
                         "
-                      ></td>
+                      >
+                        <button
+                          class="
+                            tracking-wider
+                            text-white
+                            bg-red-500
+                            px-4
+                            py-1
+                            text-sm
+                            rounded
+                            leading-loose
+                            mx-2
+                            font-semibold
+                          "
+                          title=""
+                        >
+                          <i class="fas fa-trash" aria-hidden="true"></i> Admin
+                        </button>
+                      </td>
                       <td
                         class="
                           px-5

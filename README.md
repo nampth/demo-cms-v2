@@ -13,5 +13,5 @@ setup:
 
 Please rate if you feel it helpful. Many thanks. Have fun ;) 
 
-*note: I'm using Macos (mac chip), if you're using window, maybe have some conflict
+*note: I'm using Macos (mac chip), if you're using window, maybe have some conflict.
 My code maybe not optimize, please give me feedback if there any things you want improve. Thanks
