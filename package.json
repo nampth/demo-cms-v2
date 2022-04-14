@@ -32,6 +32,10 @@
     "dependencies": {
         "@fortawesome/fontawesome-svg-core": "^6.1.1",
         "@fortawesome/free-regular-svg-icons": "^6.1.1",
-        "@fortawesome/free-solid-svg-icons": "^6.1.1"
+        "@fortawesome/free-solid-svg-icons": "^6.1.1",
+        "@fortawesome/vue-fontawesome": "^3.0.0-5",
+        "@kyvg/vue3-notification": "^2.3.4",
+        "jquery": "^3.6.0",
+        "jquery-ui": "^1.13.1"
     }
 }

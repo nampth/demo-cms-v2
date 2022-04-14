@@ -29,12 +29,4 @@ class CreatePermissionRequest extends FormRequest
             'description' => 'max:256',
         ];
     }
-
-    public function attributes()
-    {
-        return [
-            'name' => 'Tên nhóm người dùng',
-            'description' => 'Mô tả',
-        ];
-    }
 }

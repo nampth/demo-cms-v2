@@ -30,13 +30,4 @@ class UpdatePermissionRequest extends FormRequest
             'description' => 'max:256',
         ];
     }
-
-    public function attributes()
-    {
-        return [
-            'id' => 'ID',
-            'name' => 'Tên quyền người dùng',
-            'description' => 'Mô tả',
-        ];
-    }
 }

@@ -1,12 +1,17 @@
 <script setup>
 import { onMounted, ref } from "vue";
 import BreezeAuthenticatedLayout from "@/Layouts/Authenticated.vue";
+import Modal from "@/Components/Modal.vue";
+import MessageBox from "@/Components/MessageBox.vue";
 import { Head } from "@inertiajs/inertia-vue3";
+import Input from "@/Components/Input.vue";
+import InputError from "@/Components/InputError.vue";
 </script>
 <script>
 import axios from "axios";
 
 export default {
+  components: {},
   data() {
     return {
       items: [],
@@ -17,6 +22,21 @@ export default {
       order: "",
       order_by: "name",
       order_type: "desc",
+      submiting: false,
+      modalId: "permission-modal",
+      modalDeleteId: "delete-modal",
+      modalTitle: "Add Permisison",
+      modalTextConfirm: "Add",
+      modalTextCancel: "Cancel",
+      textDelete: "",
+      selectedPermission: {
+        name: "",
+        description: "",
+      },
+      errorMsg: {
+        name: "",
+        description: "",
+      },
     };
   },
   mounted() {
@@ -42,6 +62,140 @@ export default {
           }
         });
     },
+    editPermission(item) {
+      this.modalTitle = "Edit Permisison";
+      this.modalTextConfirm = "Update";
+      this.selectedPermission = item;
+      document.getElementById(this.modalId).showModal();
+    },
+    addPermission() {
+      this.modalTitle = "Add Permisison";
+      this.modalTextConfirm = "Create";
+      document.getElementById(this.modalId).showModal();
+    },
+    deletePermission(permission) {
+      this.textDelete =
+        'Are you sure to delete permisison <span class="text-red-500 font-semibold">' +
+        permission.name +
+        "</span> ?";
+      this.selectedPermission = permission;
+      document.getElementById(this.modalDeleteId).showModal();
+    },
+    cancelDelete() {
+      document.getElementById(this.modalDeleteId).showModal();
+    },
+    confirmDelete() {
+      let vm = this;
+      axios
+        .post(
+          "/backend/admin/permission/" + vm.selectedPermission.id+"/delete")
+        .then((response) => {
+          vm.submiting = false;
+          if (
+            response.status == 200 &&
+            response.data &&
+            response.data.code == 0
+          ) {
+            document.getElementById(this.modalId).close();
+            vm.$notify({
+              title: "Notify",
+              text: "Success",
+              type: "success",
+            });
+          } else {
+            if (response.data && response.data.msg) {
+              vm.errorMsg.name = err.data.msg;
+            } else {
+              document.getElementById(this.modalId).close();
+              vm.$notify({
+                title: "Notify",
+                text: "Something went wrong, please try later.",
+                type: "error",
+              });
+            }
+          }
+        })
+        .catch((err) => {
+          vm.submiting = false;
+          if (
+            err.response.status == 422 &&
+            err.response.data &&
+            err.response.data.message
+          ) {
+            vm.errorMsg.name = err.response.data.message;
+          } else {
+            document.getElementById(this.modalId).close();
+            vm.$notify({
+              title: "Notify",
+              text: "Something went wrong, please try later.",
+              type: "error",
+            });
+          }
+        });
+    },
+    handleCloseModal() {
+      this.initTablePermissions();
+    },
+    handleSubmitModal() {
+      let vm = this;
+      console.log("submit");
+      vm.submiting = true;
+      if (!vm.selectedPermission.name) {
+        vm.errorMsg.name = "Please enter value";
+        vm.submiting = false;
+        return;
+      }
+      vm.errorMsg.name = "";
+      vm.submiting = true;
+      axios
+        .post(
+          "/backend/admin/permission/" + vm.modalTextConfirm.toLowerCase(),
+          vm.selectedPermission
+        )
+        .then((response) => {
+          vm.submiting = false;
+          if (
+            response.status == 200 &&
+            response.data &&
+            response.data.code == 0
+          ) {
+            document.getElementById(this.modalId).close();
+            vm.$notify({
+              title: "Notify",
+              text: "Success",
+              type: "success",
+            });
+          } else {
+            if (response.data && response.data.msg) {
+              vm.errorMsg.name = err.data.msg;
+            } else {
+              document.getElementById(this.modalId).close();
+              vm.$notify({
+                title: "Notify",
+                text: "Something went wrong, please try later.",
+                type: "error",
+              });
+            }
+          }
+        })
+        .catch((err) => {
+          vm.submiting = false;
+          if (
+            err.response.status == 422 &&
+            err.response.data &&
+            err.response.data.message
+          ) {
+            vm.errorMsg.name = err.response.data.message;
+          } else {
+            document.getElementById(this.modalId).close();
+            vm.$notify({
+              title: "Notify",
+              text: "Something went wrong, please try later.",
+              type: "error",
+            });
+          }
+        });
+    },
   },
 };
 </script>
@@ -56,21 +210,57 @@ export default {
       </h2>
     </template>
 
+    <Message-box
+      @confirm="confirmDelete"
+      @cancel="cancelDelete"
+      :modal-id="modalDeleteId"
+      :title="'Delete Permission'"
+      :text-confirm="'Delete'"
+      :textCancel="'Cancel'"
+      :content="textDelete"
+    ></Message-box>
+    <Modal
+      @close-modal="handleCloseModal"
+      @modal-submit="handleSubmitModal"
+      :submiting="submiting"
+      :modal-id="modalId"
+      :title="modalTitle"
+      :text-confirm="modalTextConfirm"
+      :text-cancel="modalTextCancel"
+    >
+      <p class="mb-2 font-semibold text-gray-700">Name</p>
+      <Input v-model="selectedPermission.name" />
+      <InputError :message="errorMsg.name"></InputError>
+      <p class="mb-2 font-semibold text-gray-700 mt-5">Description</p>
+      <Input v-model="selectedPermission.description" />
+      <InputError :message="errorMsg.description"></InputError>
+    </Modal>
     <div class="py-12">
       <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="overflow-hidden shadow-md">
           <!-- card header -->
-          <div
-            class="
-              px-6
-              py-4
-              bg-white
-              border-b border-gray-200
-              font-bold
-              uppercase
-            "
-          >
-            Permission management
+          <div class="px-6 py-4 bg-white border-b border-gray-200 flex">
+            <h3 class="font-bold uppercase">Permission management</h3>
+            <button
+              @click="addPermission"
+              class="
+                tracking-wider
+                text-white
+                bg-emerald-500
+                px-4
+                py-1
+                text-sm
+                rounded
+                leading-loose
+                mx-2
+                ml-auto
+                font-semibold
+                flex
+              "
+              title=""
+            >
+              <img class="w-3 mt-2 mx-1" src="/imgs/plus-white.png" /> Add
+            </button>
           </div>
 
           <!-- card body -->
@@ -231,13 +421,15 @@ export default {
                           border-b border-gray-200
                           bg-white
                           text-sm
+                          flex
                         "
                       >
                         <button
+                          @click="editPermission(item)"
                           class="
                             tracking-wider
                             text-white
-                            bg-red-500
+                            bg-blue-400
                             px-4
                             py-1
                             text-sm
@@ -245,10 +437,32 @@ export default {
                             leading-loose
                             mx-2
                             font-semibold
+                            flex
                           "
                           title=""
                         >
-                          <i class="fas fa-trash" aria-hidden="true"></i> Admin
+                          <img class="w-3 mt-2 mx-1" src="/imgs/pencil.png" />
+                          Edit
+                        </button>
+                        <button
+                          @click="deletePermission(item)"
+                          class="
+                            tracking-wider
+                            text-white
+                            bg-red-400
+                            px-4
+                            py-1
+                            text-sm
+                            rounded
+                            leading-loose
+                            mx-2
+                            font-semibold
+                            flex
+                          "
+                          title=""
+                        >
+                          <img class="w-3 mt-2 mx-1" src="/imgs/trash.png" />
+                          Delete
                         </button>
                       </td>
                       <td
@@ -348,11 +562,6 @@ export default {
                 </div>
               </div>
             </div>
-          </div>
-
-          <!-- card footer -->
-          <div class="p-6 bg-white border-gray-200 text-right">
-            <!-- button link -->
           </div>
         </div>
       </div>
