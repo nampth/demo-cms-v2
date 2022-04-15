@@ -7,6 +7,7 @@ use App\Http\Requests\User\CreateUserRequest;
 use App\Http\Requests\User\UpdateUserRequest;
 use App\Http\Services\UserServices;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class UserController extends Controller
 {
@@ -19,7 +20,7 @@ class UserController extends Controller
 
     public function index()
     {
-        return view('backend.admin.user.index');
+        return Inertia::render('Backend/Admin/User'); 
     }
 
     public function add(CreateUserRequest $request)

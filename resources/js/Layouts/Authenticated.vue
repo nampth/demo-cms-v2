@@ -37,6 +37,14 @@ const showingNavigationDropdown = ref(false);
               </div>
               <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                 <BreezeNavLink
+                  :href="route('backend.admin.user.index')"
+                  :active="route().current('backend.admin.user.index')"
+                >
+                  User management
+                </BreezeNavLink>
+              </div>
+              <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                <BreezeNavLink
                   :href="route('backend.admin.permission.index')"
                   :active="route().current('backend.admin.permission.index')"
                 >
@@ -171,10 +179,18 @@ const showingNavigationDropdown = ref(false);
           </div>
           <div class="pt-2 pb-3 space-y-1">
             <BreezeResponsiveNavLink
+              :href="route('backend.admin.user.index')"
+              :active="route().current('backend.admin.user.index')"
+            >
+              User management
+            </BreezeResponsiveNavLink>
+          </div>
+          <div class="pt-2 pb-3 space-y-1">
+            <BreezeResponsiveNavLink
               :href="route('backend.admin.permission.index')"
               :active="route().current('backend.admin.permission.index')"
             >
-              Dashboard
+              Permission management
             </BreezeResponsiveNavLink>
           </div>
 

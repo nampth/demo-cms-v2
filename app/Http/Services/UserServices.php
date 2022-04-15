@@ -106,26 +106,17 @@ class UserServices
         $role = $request->input('role');
         $status = $request->input('status');
 
-        $draw = $request->input('draw');
         $start = $request->input('start');
         $length = $request->input('length');
-        $columns = $request->input('columns');
+        $keyword = $request->input('search');
+        $orderBy = $request->input('order_by');
+        $orderType = $request->input('order_type');
 
-        $search = $request->input('search');
-        $keyword = $search['value'];
-
-        $order = $request->input('order');
-        $orderBy = $columns[$order[0]['column']]['data'];
-        $orderType = $order[0]['dir'];
-
-        if ($orderBy == '') $orderBy = 'updated_at';
-
-        $filteredRecords = $this->repo->listing($role, $status, $keyword, $start, $length, $orderBy, $orderType, true);
-        $totalRecords = $this->repo->listing($role, $status, $keyword, $start, $length, $orderBy, $orderType, true);
+        $filteredRecords = $this->userRepo->listing($role, $status, $keyword, $start, $length, $orderBy, $orderType, true);
+        $totalRecords = $this->userRepo->listing($role, $status, $keyword, $start, $length, $orderBy, $orderType, true);
 
         return response()->json([
-            'draw' => $draw,
-            'data' => $this->repo->listing($role, $status, $keyword, $start, $length, $orderBy, $orderType, false),
+            'data' => $this->userRepo->listing($role, $status, $keyword, $start, $length, $orderBy, $orderType, false),
             'recordsFiltered' => $filteredRecords ? $filteredRecords : 0,
             'recordsTotal' => $totalRecords ? $totalRecords : 0,
         ]);

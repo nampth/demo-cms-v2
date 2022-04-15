@@ -8,5 +8,5 @@ Route::group(['namespace' => 'Permission', 'prefix' => 'permission', 'as' => 'pe
     Route::post('/create', [PermissionController::class, 'create'])->name('create');
     Route::post('/update', [PermissionController::class, 'update'])->name('update');
     Route::post('/listing', [PermissionController::class, 'listing'])->name('listing');
-    Route::post('/{id}/delete', [PermissionController::class, 'delete'])->name('delete');
+    Route::post('/{id}/delete', [PermissionController::class, 'deteleById'])->name('delete');
 });

@@ -24,7 +24,7 @@ Route::get('/', function () {
     ]);
 });
 
-Route::group(['namespace' => 'Backend', 'prefix' => 'backend', 'as' => 'backend.', 'middleare' => ['auth', 'verified']], function () {
+Route::group(['prefix' => 'backend', 'as' => 'backend.', 'middleare' => ['auth', 'verified']], function () {
     UIUtils::include_route_files(__DIR__ . '/backend/');
 });
 

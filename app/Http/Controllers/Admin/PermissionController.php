@@ -41,7 +41,8 @@ class PermissionController extends Controller
     {
         return $this->permissionServices->update($request);
     }
-    public function detele($id)
+
+    public function deteleById($id)
     {
         return $this->permissionServices->delete($id);
     }

@@ -26,8 +26,6 @@ class UserRepository extends BaseRepository
         $query = $this->model
             ->with(['roles', 'user' => function ($q) {
                 $q->select('id', 'name');
-            }])->with(['organization', 'user' => function ($q) {
-                $q->select('id', 'name');
             }]);
         if ($role) {
             $query->whereHas('roles', function ($q) use ($role) {

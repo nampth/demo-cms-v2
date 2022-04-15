@@ -17,6 +17,7 @@ export default {
       items: [],
       total: 0,
       filtered: 0,
+      search: "",
       start: 0,
       length: 10,
       order: "",
@@ -58,7 +59,6 @@ export default {
             this.items = response.data.data;
             this.filtered = response.data.recordsFiltered;
             this.total = response.data.recordsTotal;
-            console.log(response.data.data);
           }
         });
     },
@@ -88,7 +88,8 @@ export default {
       let vm = this;
       axios
         .post(
-          "/backend/admin/permission/" + vm.selectedPermission.id+"/delete")
+          "/backend/admin/permission/" + vm.selectedPermission.id + "/delete"
+        )
         .then((response) => {
           vm.submiting = false;
           if (
@@ -96,7 +97,7 @@ export default {
             response.data &&
             response.data.code == 0
           ) {
-            document.getElementById(this.modalId).close();
+            document.getElementById(this.modalDeleteId).close();
             vm.$notify({
               title: "Notify",
               text: "Success",
@@ -106,7 +107,7 @@ export default {
             if (response.data && response.data.msg) {
               vm.errorMsg.name = err.data.msg;
             } else {
-              document.getElementById(this.modalId).close();
+              document.getElementById(this.modalDeleteId).close();
               vm.$notify({
                 title: "Notify",
                 text: "Something went wrong, please try later.",
@@ -134,11 +135,17 @@ export default {
         });
     },
     handleCloseModal() {
-      this.initTablePermissions();
+      let vm = this;
+      setTimeout(function () {
+        vm.initTablePermissions();
+        vm.selectedPermission = {
+          name: "",
+          description: "",
+        };
+      }, 500);
     },
     handleSubmitModal() {
       let vm = this;
-      console.log("submit");
       vm.submiting = true;
       if (!vm.selectedPermission.name) {
         vm.errorMsg.name = "Please enter value";
@@ -212,7 +219,7 @@ export default {
 
     <Message-box
       @confirm="confirmDelete"
-      @cancel="cancelDelete"
+      @close="handleCloseModal"
       :modal-id="modalDeleteId"
       :title="'Delete Permission'"
       :text-confirm="'Delete'"
@@ -220,20 +227,26 @@ export default {
       :content="textDelete"
     ></Message-box>
     <Modal
-      @close-modal="handleCloseModal"
-      @modal-submit="handleSubmitModal"
+      @close="handleCloseModal"
+      @submit="handleSubmitModal"
       :submiting="submiting"
       :modal-id="modalId"
       :title="modalTitle"
       :text-confirm="modalTextConfirm"
       :text-cancel="modalTextCancel"
     >
-      <p class="mb-2 font-semibold text-gray-700">Name</p>
-      <Input v-model="selectedPermission.name" />
-      <InputError :message="errorMsg.name"></InputError>
-      <p class="mb-2 font-semibold text-gray-700 mt-5">Description</p>
-      <Input v-model="selectedPermission.description" />
-      <InputError :message="errorMsg.description"></InputError>
+      <div class="grid lg:grid-cols-2 md:grid-cols-1 gap-4">
+        <div>
+          <p class="mb-2 font-semibold text-gray-700">Name</p>
+          <Input v-model="selectedPermission.name" />
+          <InputError :message="errorMsg.name"></InputError>
+        </div>
+        <div>
+          <p class="mb-2 font-semibold text-gray-700">Description</p>
+          <Input v-model="selectedPermission.description" />
+          <InputError :message="errorMsg.description"></InputError>
+        </div>
+      </div>
     </Modal>
     <div class="py-12">
       <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">

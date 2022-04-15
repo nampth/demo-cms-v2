@@ -17,6 +17,7 @@ onMounted(() => {
 <template>
   <input
     class="
+      w-full
       border-gray-300
       focus:border-indigo-300
       focus:ring
