@@ -7,6 +7,7 @@ use App\Http\Requests\Role\CreateRoleRequest;
 use App\Http\Requests\Role\UpdateRoleRequest;
 use App\Http\Services\RoleServices;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class RoleController extends Controller
 {
@@ -19,7 +20,7 @@ class RoleController extends Controller
 
     public function index()
     {
-        return view('backend.admin.role.index');
+        return Inertia::render('Backend/Admin/Role'); 
     }
 
     public function add(CreateRoleRequest $request)
@@ -32,7 +33,7 @@ class RoleController extends Controller
         return $this->roleServices->update($request);
     }
     
-    public function delete($id)
+    public function deleteById($id)
     {
         return $this->roleServices->delete($id);
     }

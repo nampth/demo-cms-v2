@@ -28,7 +28,7 @@ class CreateUserRequest extends FormRequest
             'username' => 'required|unique:users|max:100',
             'email' => 'required|unique:users|max:100|email',
             'password' => 'required|min:8|max:100',
-            're_password' => 'required|min:8|max:100|same:password',
+            // 're_password' => 'required|min:8|max:100|same:password',
             'name' => 'required|max:100',
             'status' => 'required',
             'role' => 'required|numeric'
@@ -41,7 +41,7 @@ class CreateUserRequest extends FormRequest
             'username'=>'Username',
             'email' => 'Email',
             'password' => 'Password',
-            're_password' => 'Confirm password',
+            // 're_password' => 'Confirm password',
             'name' => 'Fullname',
             'status' => 'Status',
             'role' => 'Role'

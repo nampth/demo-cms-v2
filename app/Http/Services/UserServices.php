@@ -95,7 +95,6 @@ class UserServices
             ], 400);
         }
         $user->roles()->detach();
-        return $user->delete();
 
         return response()->json([
             'code' => $user->delete() ? SUCCESS_CODE : ERROR_CODE

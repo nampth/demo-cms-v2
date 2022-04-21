@@ -27,7 +27,7 @@ class UpdateUserRequest extends FormRequest
         return [
             'id' => 'required|numeric',
             'password' => 'nullable|min:8|max:100',
-            're_password' => 'nullable|min:8|max:100|same:password',
+            // 're_password' => 'nullable|min:8|max:100|same:password',
             'name' => 'required|max:100',
             'role' => 'required|numeric'
         ];
@@ -38,7 +38,7 @@ class UpdateUserRequest extends FormRequest
         return [
             'id' => 'ID',
             'password' => 'Password',
-            're_password' => 'Confirm password',
+            // 're_password' => 'Confirm password',
             'name' => 'Fullname',
             'role' => 'Role'
         ];

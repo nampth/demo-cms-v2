@@ -72,6 +72,9 @@ export default {
       this.modalTitle = "Edit User";
       this.modalTextConfirm = "Update";
       this.selectedUser = item;
+      if (item.roles && item.roles.length > 0) {
+        this.selectedUser.role = item.roles[0].id;
+      }
       document.getElementById(this.modalId).showModal();
     },
     addUser() {
@@ -237,14 +240,20 @@ export default {
       :text-confirm="modalTextConfirm"
       :text-cancel="modalTextCancel"
     >
-     <div class="grid lg:grid-cols-2 md:grid-cols-1 gap-4">
+      <div class="grid lg:grid-cols-2 md:grid-cols-1 gap-4">
         <div>
           <p class="mb-2 font-semibold text-gray-700">Username</p>
-          <Input v-model="selectedUser.username" type="text" />
+          <Input
+            class="disabled:bg-slate-200" disabled
+            v-if="modalTextConfirm == 'Update'"
+            v-model="selectedUser.username"
+            type="text"
+          />
+          <Input v-else v-model="selectedUser.username" type="text" />
         </div>
         <div>
           <p class="mb-2 font-semibold text-gray-700">Password</p>
-          <Input v-model="selectedUser.password" type="password"/>
+          <Input v-model="selectedUser.password" type="password" />
         </div>
       </div>
       <div class="grid lg:grid-cols-2 md:grid-cols-1 gap-4 mt-5">
@@ -294,7 +303,7 @@ export default {
               appearance-none
             "
           >
-            <option :value="role.name" v-for="role in roles">
+            <option :value="role.id" v-for="role in roles">
               {{ role.description ? role.description : role.name }}
             </option>
           </select>

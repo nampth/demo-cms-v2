@@ -30,13 +30,4 @@ class UpdateRoleRequest extends FormRequest
             'default_redirect' => 'required|max:256',
         ];
     }
-
-    public function attributes()
-    {
-        return [
-            'name' => 'Tên nhóm người dùng',
-            'description' => 'Mô tả',
-            'default_redirect' => 'Trang mặc định'
-        ];
-    }
 }
