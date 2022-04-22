@@ -5,10 +5,12 @@ namespace App\Http\Services;
 use App\Repositories\Backend\Admin\PermissionRepository;
 use Illuminate\Http\Request;
 
-class PermissionServices{
+class PermissionServices
+{
     private $permissionRepo;
 
-    public function __construct(PermissionRepository $permissionRepo){
+    public function __construct(PermissionRepository $permissionRepo)
+    {
         $this->permissionRepo = $permissionRepo;
     }
 
@@ -18,15 +20,8 @@ class PermissionServices{
         return view('backend.admin.permission.index');
     }
 
-    public function listing(Request $request)
+    public function listing($start, $length, $keyword, $orderBy, $orderType)
     {
-    
-        $start = $request->input('start');
-        $length = $request->input('length');
-        $keyword = $request->input('search');
-        $orderBy = $request->input('order_by');
-        $orderType = $request->input('order_type');
-
         $filteredRecords = $this->permissionRepo->listingSimple([], $keyword, ['name', 'description'], $start, $length, $orderBy, $orderType, true);
         $totalRecords = $this->permissionRepo->listingSimple([], '', ['name', 'description'], $start, $length, $orderBy, $orderType, true);
         return response()->json([
@@ -36,25 +31,26 @@ class PermissionServices{
         ]);
     }
 
-    public function add(Request $request)
+    public function add($name, $desc)
     {
         return response()->json([
             'code' => $this->permissionRepo->create([
-                'name' => $request->input('name'),
-                'description' => $request->input('description')
+                'name' => $name,
+                'description' => $desc
             ]) ? SUCCESS_CODE : ERROR_CODE
         ]);
     }
 
-    public function update(Request $request)
+    public function update($id, $name, $desc)
     {
         return response()->json([
             'code' => $this->permissionRepo->updateById(
-                $request->input('id'),
+                $id,
                 [
-                    'name' => $request->input('name'),
-                    'description' => $request->input('description')
-                ]) ? SUCCESS_CODE : ERROR_CODE,
+                    'name' => $name,
+                    'description' => $desc
+                ]
+            ) ? SUCCESS_CODE : ERROR_CODE,
         ]);
     }
 

@@ -24,7 +24,13 @@ class PermissionController extends Controller
 
     public function listing(Request $request)
     {
-        return $this->permissionServices->listing($request);
+        $start = $request->input('start');
+        $length = $request->input('length');
+        $keyword = $request->input('search');
+        $orderBy = $request->input('order_by');
+        $orderType = $request->input('order_type');
+
+        return $this->permissionServices->listing($start, $length, $keyword, $orderBy, $orderType);
     }
 
     public function listingAll(Request $request)
@@ -34,12 +40,19 @@ class PermissionController extends Controller
 
     public function create(CreatePermissionRequest $request)
     {
-        return $this->permissionServices->add($request);
+        return $this->permissionServices->add(
+            $request->input('name'),
+            $request->input('description')
+        );
     }
 
     public function update(UpdatePermissionRequest $request)
     {
-        return $this->permissionServices->update($request);
+        return $this->permissionServices->update(
+            $request->input('id'),
+            $request->input('name'),
+            $request->input('description')
+        );
     }
 
     public function deteleById($id)

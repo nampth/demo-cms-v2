@@ -25,12 +25,25 @@ class UserController extends Controller
 
     public function add(CreateUserRequest $request)
     {
-        return $this->userServices->add($request);
+        return $this->userServices->add(
+            $request->input('username'),
+            $request->input('email'),
+            $request->input('password'),
+            $request->input('name'),
+            $request->input('status'),
+            $request->input('role')
+        );
     }
 
     public function update(UpdateUserRequest $request)
     {
-        return $this->userServices->update($request);
+        return $this->userServices->update(
+            $request->input('role'),
+            $request->input('id'),
+            $request->input('email'),
+            $request->input('password'),
+            $request->input('name'),
+        );
     }
 
     public function status($id)
@@ -45,7 +58,16 @@ class UserController extends Controller
 
     public function listing(Request $request)
     {
-        return $this->userServices->listing($request);
+        $role = $request->input('role');
+        $status = $request->input('status');
+
+        $start = $request->input('start');
+        $length = $request->input('length');
+        $keyword = $request->input('search');
+        $orderBy = $request->input('order_by');
+        $orderType = $request->input('order_type');
+
+        return $this->userServices->listing($role, $status, $keyword, $start, $length, $orderBy, $orderType);
     }
 
 }

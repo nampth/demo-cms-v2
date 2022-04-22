@@ -15,14 +15,8 @@ class RoleServices
         $this->roleRepo = $roleRepo;
     }
 
-    public function listing(Request $request)
+    public function listing($start, $length, $keyword, $orderBy, $orderType)
     {
-        $start = $request->input('start');
-        $length = $request->input('length');
-        $keyword = $request->input('search');
-        $orderBy = $request->input('order_by');
-        $orderType = $request->input('order_type');
-
         $filteredRecords = $this->roleRepo->listingSimple([], $keyword, ['name', 'description'], $start, $length, $orderBy, $orderType, true);
         $totalRecords = $this->roleRepo->listingSimple([], '', ['name', 'description'], $start, $length, $orderBy, $orderType, true);
         return response()->json([
@@ -39,21 +33,25 @@ class RoleServices
         ]);
     }
 
-    public function add(Request $request)
-    {
+    public function add(
+        $name,
+        $desc,
+        $redirect,
+        $permissions
+    ) {
         return response()->json([
             'code' => $this->roleRepo->add(
-                $request->input('name'),
-                $request->input('description'),
-                $request->input('default_redirect'),
-                $request->input('permissions')
+                $name,
+                $desc,
+                $redirect,
+                $permissions
             ) ? SUCCESS_CODE : ERROR_CODE
         ]);
     }
 
-    public function update(Request $request)
+    public function update($id, $name, $desc, $redirect, $permissions)
     {
-        $role = Role::find($request->input('id'));
+        $role = Role::find($id);
         if (!$role) {
             return response()->json([
                 'code' => ERROR_CODE,
@@ -63,12 +61,12 @@ class RoleServices
 
         return response()->json([
             'code' => $this->roleRepo->update(
-                $request->input('id'),
+                $id,
                 $role,
-                $request->input('name'),
-                $request->input('description'),
-                $request->input('default_redirect'),
-                $request->input('permissions')
+                $name,
+                $desc,
+                $redirect,
+                $permissions
             ) ? SUCCESS_CODE : ERROR_CODE
         ]);
     }

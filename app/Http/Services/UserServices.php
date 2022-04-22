@@ -16,10 +16,8 @@ class UserServices
         $this->userRepo = $userRepo;
     }
 
-    public function add(Request $request)
+    public function add($roleId, $username, $email, $password, $name, $status)
     {
-
-        $roleId = $request->input('role');
         $role = Role::find($roleId);
 
         // validate for exist role
@@ -32,19 +30,18 @@ class UserServices
 
         return response()->json([
             'code' => $this->userRepo->add(
-                $request->input('username'),
-                $request->input('email'),
-                $request->input('password'),
-                $request->input('name'),
-                $request->input('status'),
-                $role
+                $username,
+                $email,
+                $password,
+                $name,
+                $status,
+                $roleId
             ) ? SUCCESS_CODE : ERROR_CODE
         ]);
     }
 
-    public function update(Request $request)
+    public function update($roleId, $id, $email, $password, $name)
     {
-        $roleId = $request->input('role');
         $role = Role::find($roleId);
         // validate for exist role
         if (!$role) {
@@ -55,10 +52,10 @@ class UserServices
         }
 
         $result = $this->userRepo->edit(
-            $request->input('id'),
-            $request->input('email'),
-            $request->input('password'),
-            $request->input('name'),
+            $id,
+            $email,
+            $password,
+            $name,
             $roleId
         );
         return response()->json([
@@ -101,16 +98,8 @@ class UserServices
         ]);
     }
 
-    public function listing(Request $request){
-        $role = $request->input('role');
-        $status = $request->input('status');
-
-        $start = $request->input('start');
-        $length = $request->input('length');
-        $keyword = $request->input('search');
-        $orderBy = $request->input('order_by');
-        $orderType = $request->input('order_type');
-
+    public function listing($role, $status, $keyword, $start, $length, $orderBy, $orderType)
+    {
         $filteredRecords = $this->userRepo->listing($role, $status, $keyword, $start, $length, $orderBy, $orderType, true);
         $totalRecords = $this->userRepo->listing($role, $status, $keyword, $start, $length, $orderBy, $orderType, true);
 

@@ -20,19 +20,31 @@ class RoleController extends Controller
 
     public function index()
     {
-        return Inertia::render('Backend/Admin/Role'); 
+        return Inertia::render('Backend/Admin/Role');
     }
 
     public function add(CreateRoleRequest $request)
     {
-        return $this->roleServices->add($request);
+
+        return $this->roleServices->add(
+            $request->input('name'),
+            $request->input('description'),
+            $request->input('default_redirect'),
+            $request->input('permissions')
+        );
     }
 
     public function update(UpdateRoleRequest $request)
     {
-        return $this->roleServices->update($request);
+        return $this->roleServices->update(
+            $request->input('id'),
+            $request->input('name'),
+            $request->input('description'),
+            $request->input('default_redirect'),
+            $request->input('permissions')
+        );
     }
-    
+
     public function deleteById($id)
     {
         return $this->roleServices->delete($id);
@@ -40,12 +52,17 @@ class RoleController extends Controller
 
     public function listing(Request $request)
     {
-        return $this->roleServices->listing($request);
+        $start = $request->input('start');
+        $length = $request->input('length');
+        $keyword = $request->input('search');
+        $orderBy = $request->input('order_by');
+        $orderType = $request->input('order_type');
+
+        return $this->roleServices->listing($start, $length, $keyword, $orderBy, $orderType);
     }
 
     public function listingAll(Request $request)
     {
         return $this->roleServices->listingAll();
     }
-
 }
