@@ -5,7 +5,7 @@
 
 setup:
 - clone this code
-- cd to folder
+- cd to folder laradock
 - run this command "docker-compose up -d mysql nginx php-fpm redis workspace phpmyadmin"
 - once container is up, ssh to workspace by command "docker exec -it example_cms-workspace-1 bash"
 - run command "php artisan migrate:fresh --seed"
