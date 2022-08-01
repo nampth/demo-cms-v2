@@ -244,7 +244,8 @@ export default {
         <div>
           <p class="mb-2 font-semibold text-gray-700">Username</p>
           <Input
-            class="disabled:bg-slate-200" disabled
+            class="disabled:bg-slate-200"
+            disabled
             v-if="modalTextConfirm == 'Update'"
             v-model="selectedUser.username"
             type="text"
@@ -344,6 +345,8 @@ export default {
             <div class="my-2 flex sm:flex-row flex-col">
               <div class="flex flex-row mb-1 sm:mb-0">
                 <div class="relative">
+                  <b-form-select>
+                  </b-form-select>
                   <select
                     v-model="length"
                     @change="initTableUsers"
